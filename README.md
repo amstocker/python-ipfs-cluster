@@ -12,5 +12,7 @@ The goal of ipfs-cluster is to be a light application built on such a pub-sub pr
     - This is an effective way to partition the replication of data because it means that every node does not need to be aware of the overall topology of the cluster and also there would be no need for a master node.
 - Eventually Consistent Operational History
     - In order to guarantee eventual consistency of the pinset across all nodes, each node will have to keep track of the objects that *the node itself* has added and removed to the pin-set, so that when a neighboring node comes online it would be able to properly replicate the data within its radius of separation.
+        - TODO: is this the case?
     - This could be done by each node managing a block-chain structure where it periodically (every minute? ten minutes?) consolidates all new operations (if any) into a block and then updates the head of its blockchain where each block looks like `{[sequence number], [chronological set of operations]}`.  Then new nodes or nodes that have been offline will be able to query neighboring nodes for the head block of their operational history, and get the history back to the sequence number it last left off at.
+        - TODO: In this case there could be disjoined subclusters that pin the same thing.  Would it be better to have a global block-chain?
     - This operational history could *also* be replicated which would allow nodes to still get the recent operational history of nodes that have gone offline.
